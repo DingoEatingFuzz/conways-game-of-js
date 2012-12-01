@@ -3,6 +3,7 @@
 <head>
     <meta charset='utf-8'/>
     <script src='jlife.js'></script>
+    <canvas id='game' width='800px' height='800px'></canvas>
 </head>
 <body>
     <script>
@@ -34,16 +35,32 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         ]);
 
+        var board3 = JLife(500, 500);
+
+        var canvas = document.getElementById('game');
+        var ctx    = canvas.getContext('2d');
+
         var loop = setInterval(function() {
-            printBoard(board2);
-            board2.step();
+            canvasPrintBoard(board3, ctx);
+            board3.step();
         }, 100);
+
+        function canvasPrintBoard(board, ctx) {
+            imageData = ctx.createImageData(board.width, board.height);
+            for (var i = 0, len = board.cells.length; i < len; ++i) {
+                var idx = i * 4;
+                var color = board.cells[i] ? 0 : 255;
+                imageData.data[idx]   = imageData.data[idx+1] = imageData.data[idx+2] = color;
+                imageData.data[idx+3] = 255;
+            }
+            ctx.putImageData(imageData, 0, 0);
+        }
 
         function printBoard(board) {
             console.log(
                 board.cells.toString()
                     .replace(/,/g, '')
-                    .replace(/(\d{17})/g, '$1\n')
+                    .replace(/(\d{50})/g, '$1\n')
                     .replace(/0/g, ' ')
                     .replace(/1/g, 'X')
             );

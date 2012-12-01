@@ -11,7 +11,7 @@ JLife = (function() {
     }
 
     return function(w, h, state) {
-        return { 
+        return {
             cells: seedGrid(w, h, state),
             width: w,
             height: h,
