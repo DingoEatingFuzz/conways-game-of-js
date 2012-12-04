@@ -4,55 +4,31 @@
     <meta charset='utf-8'/>
     <script src='jlife.js'></script>
     <div id='game-box'>
-        <canvas id='game'      width='1200px' height='800px'></canvas>
-        <canvas id='game-grid' width='1200px' height='800px'></canvas>
+        <canvas id='game'></canvas>
+        <canvas id='game-grid'></canvas>
     </div>
     <style>
+        html, body { margin:0; padding:0; height:100%; }
         #game-box { position:relative; margin:auto; }
         #game, #game-grid { position:absolute; top:0; left:0; }
-        #game, #game-grid, #game-box { width:1200px; height:800px;}
+        #game, #game-grid, #game-box { width:100%; height:100%; }
     </style>
 </head>
 <body>
     <script>
-        var board1 = JLife(5, 5, [
-            0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0,
-            0, 1, 1, 1, 0,
-            0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0
-        ]);
+        var squareSize = 4;
 
-        var board2 = JLife(17, 17, [
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0,
-            0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0,
-            0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0,
-            0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0,
-            0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0,
-            0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0,
-            0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-        ]);
+        var gameCanvas = document.getElementById('game');
+        var gridCanvas = document.getElementById('game-grid');
+            gameCanvas.width  = gridCanvas.width  = document.width;
+            gameCanvas.height = gridCanvas.height = document.height;
 
-        var board3 = JLife(300, 200);
-
-        var canvas = document.getElementById('game');
-        var ctx    = canvas.getContext('2d');
-
-        initGrid(4);
+        var board = JLife(Math.floor(gameCanvas.width / squareSize), Math.floor(gameCanvas.height / squareSize));
+        initGrid(gridCanvas, squareSize);
 
         var loop = setInterval(function() {
-            board3.step();
-            canvasBigPrintBoard(board3, ctx, 4);
+            board.step();
+            canvasBigPrintBoard(board, gameCanvas.getContext('2d'), squareSize);
         }, 1000/25);
 
         function canvasPrintBoard(board, ctx) {
@@ -86,9 +62,9 @@
             );
         }
 
-        function initGrid(size) {
-            var canvas = document.getElementById('game-grid'),
-                ctx    = canvas.getContext('2d');
+        function initGrid(canvas, size) {
+            size = size || 10;
+            ctx = canvas.getContext('2d');
             ctx.strokeStyle = '#CCC';
             ctx.lineWidth   = 1;
             for (var i = 0, len = canvas.width; i <= len; i += size) {
