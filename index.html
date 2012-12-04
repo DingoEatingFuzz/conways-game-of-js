@@ -20,8 +20,8 @@
 
         var gameCanvas = document.getElementById('game');
         var gridCanvas = document.getElementById('game-grid');
-            gameCanvas.width  = gridCanvas.width  = document.width;
-            gameCanvas.height = gridCanvas.height = document.height;
+            gameCanvas.width  = gridCanvas.width  = document.body.clientWidth;
+            gameCanvas.height = gridCanvas.height = document.body.clientHeight;
         var loop;
 
         initGame(gameCanvas, gridCanvas, squareSize);
