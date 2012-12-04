@@ -10,7 +10,11 @@ JLife = (function() {
         return grid;
     }
 
+
     return function(w, h, state) {
+
+        var _cells = [];
+
         return {
             cells: seedGrid(w, h, state),
             width: w,
@@ -30,8 +34,12 @@ JLife = (function() {
                 }
             },
             at: function(x, y) {
-                var grid = this;
-                var pos  = y ? grid.width*y + x : x;
+                var grid      = this;
+                var pos       = y ? grid.width*y + x : x;
+
+                if (_cells[pos]) return _cells[pos];
+
+                var _adjacent = [];
                 var cell = {
                     state:     grid.cells[pos],
                     top:       function() { return pos <  grid.width; },
@@ -39,6 +47,8 @@ JLife = (function() {
                     left:      function() { return pos %  grid.width === 0; },
                     right:     function() { return pos %  grid.width === grid.width - 1; },
                     neighbors: function() {
+                        if (_adjacent.length) return _adjacent;
+
                         var n = [ 1, 1, 1, 1, 0, 1, 1, 1, 1 ];
 
                         if (this.top())    n[0] = n[1] = n[2] = 0;
@@ -51,9 +61,9 @@ JLife = (function() {
                             if (n[i]) {
                                 var offset = i - 4;
                                 var cellVal =
-                                      offset < -1 ? grid.cells[grid.width * -1 - (offset + 3) + pos]
-                                    : offset >  1 ? grid.cells[grid.width      - (3 - offset) + pos]
-                                    :               grid.cells[offset + pos]
+                                      offset < -1 ? grid.width * -1 - (offset + 3) + pos
+                                    : offset >  1 ? grid.width      - (3 - offset) + pos
+                                    :               offset + pos
                                 ;
                                 adjacent.push(cellVal);
                             }
@@ -62,13 +72,16 @@ JLife = (function() {
                         adjacent.on = function() {
                             var total = 0;
                             for (var i = 0, len = this.length; i < len; ++i) {
-                                total += this[i];
+                                total += grid.cells[this[i]];
                             }
                             return total;
                         };
+
+                        _adjacent = adjacent;
                         return adjacent;
                     }
                 }
+                _cells[pos] = cell;
                 return cell;
             }
         };
