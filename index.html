@@ -16,6 +16,14 @@
 </head>
 <body>
     <script>
+        var alive = true;
+
+        (function() {
+          var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                                      window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+          window.requestAnimationFrame = requestAnimationFrame;
+        })();
+
         var squareSize = parseInt(location.hash.substr(1)) || 4;
 
         var gameCanvas = document.getElementById('game');
@@ -46,7 +54,7 @@
             ctx.fillStyle = '#FFF';
             ctx.fillRect(0, 0, board.width * size, board.height * size);
             ctx.fillStyle = '#09F';
-	    ctx.beginPath();
+            ctx.beginPath();
             for (var i = 0, len = board.cells.length; i < len; ++i) {
                 var x = i % board.width, y = Math.floor(i / board.width);
                 if (board.cells[i]) ctx.fillRect(x * size, y * size, size, size);
@@ -84,7 +92,7 @@
             }
         }
 
-        function initGame(gameCanvas, gridCanvas, size) {
+        function initGame(gameCanvas, gridCanvas, size, state) {
             kill();
 
             var ctx = gameCanvas.getContext('2d');
@@ -93,14 +101,26 @@
             var board = JLife(Math.floor(gameCanvas.width / size), Math.floor(gameCanvas.height / size));
             initGrid(gridCanvas, size);
 
-            loop = setInterval(function() {
+            var step = function() {
                 board.step();
                 canvasBigPrintBoard(board, ctx, size);
-            }, 1000/25);
+                if (boardState == state) window.requestAnimationFrame(step);
+                else alive = true;
+            }
+
+            if (window.requestAnimationFrame) {
+                window.requestAnimationFrame(step);
+            } else {
+                loop = setInterval(function() {
+                    board.step();
+                    canvasBigPrintBoard(board, ctx, size);
+                }, 1000/25);
+            }
         }
 
         function kill() {
             clearInterval(loop);
+            alive = false;
         }
     </script>
 </body>
