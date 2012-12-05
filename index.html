@@ -16,7 +16,7 @@
 </head>
 <body>
     <script>
-        var alive = true;
+        var boardState = 0;
 
         (function() {
           var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
@@ -32,11 +32,11 @@
             gameCanvas.height = gridCanvas.height = document.body.clientHeight;
         var loop;
 
-        initGame(gameCanvas, gridCanvas, squareSize);
+        initGame(gameCanvas, gridCanvas, squareSize, ++boardState);
 
         window.onhashchange = function() {
             squareSize = parseInt(location.hash.substr(1)) || 4;
-            initGame(gameCanvas, gridCanvas, squareSize);
+            initGame(gameCanvas, gridCanvas, squareSize, ++boardState);
         }
 
         function canvasPrintBoard(board, ctx) {
@@ -105,7 +105,7 @@
                 board.step();
                 canvasBigPrintBoard(board, ctx, size);
                 if (boardState == state) window.requestAnimationFrame(step);
-                else alive = true;
+                else ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
             }
 
             if (window.requestAnimationFrame) {
@@ -120,7 +120,6 @@
 
         function kill() {
             clearInterval(loop);
-            alive = false;
         }
     </script>
 </body>
