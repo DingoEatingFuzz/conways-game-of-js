@@ -46,6 +46,7 @@
             ctx.fillStyle = '#FFF';
             ctx.fillRect(0, 0, board.width * size, board.height * size);
             ctx.fillStyle = '#09F';
+	    ctx.beginPath();
             for (var i = 0, len = board.cells.length; i < len; ++i) {
                 var x = i % board.width, y = Math.floor(i / board.width);
                 if (board.cells[i]) ctx.fillRect(x * size, y * size, size, size);
