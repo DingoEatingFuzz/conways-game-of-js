@@ -1,7 +1,8 @@
+"use strict"
 window.JLife = do ->
 
     seedGrid = (w, h, state) ->
-        return if state? then state[..] else ( Math.round(Math.random()) for x in [0..(w * h)] )
+        return if state? then state[..] else ( Math.round(Math.random()) for x in [1..(w * h)] )
 
     return (w, h, state) ->
         _cells = []
@@ -10,6 +11,10 @@ window.JLife = do ->
             cells:  seedGrid(w, h, state)
             width:  w
             height: h
+            top:    (pos) -> pos <  @width
+            bottom: (pos) -> pos >= @width * (@height - 1)
+            left:   (pos) -> pos %  @width is 0
+            right:  (pos) -> pos %  @width is @width - 1
 
             step: (num = 1) ->
                 for iter in [1..num]
@@ -19,27 +24,21 @@ window.JLife = do ->
                         buffer[i] = if cell then +(4 > alive > 1) else +(alive is 3)
                     @cells = buffer
 
-            at: (x, y) ->
+            at: (idx) ->
                 grid = this
-                pos = if y then @width * y + x else x
+                pos = idx
 
                 return _cells[pos] if _cells[pos]
 
-                _adjacent = []
                 cell =
                     state:  @cells[pos]
-                    top:    => pos <  @width
-                    bottom: => pos >= @width * (@height - 1)
-                    left:   => pos %  @width is 0
-                    right:  => pos %  @width is @width - 1
                     neighbors: ->
-                        return _adjacent if _adjacent.length
                         n = [ 1, 1, 1, 1, 0, 1, 1, 1, 1 ]
 
-                        n[0] = n[1] = n[2] = 0 if @top()
-                        n[6] = n[7] = n[8] = 0 if @bottom()
-                        n[0] = n[3] = n[6] = 0 if @left()
-                        n[2] = n[5] = n[8] = 0 if @right()
+                        n[0] = n[1] = n[2] = 0 if grid.top(pos)
+                        n[6] = n[7] = n[8] = 0 if grid.bottom(pos)
+                        n[0] = n[3] = n[6] = 0 if grid.left(pos)
+                        n[2] = n[5] = n[8] = 0 if grid.right(pos)
 
                         adjacent = []
                         for neighbor, i in n
@@ -57,8 +56,9 @@ window.JLife = do ->
                                 total += grid.cells[neighbor]
                             return total
 
-                        _adjacent = adjacent
+                        @neighbors = -> adjacent
                         return adjacent
                 _cells[pos] = cell
+                if _cells.length is @width * @height then @at = (idx) -> _cells[idx]
                 return cell
         return game
