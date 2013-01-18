@@ -61,7 +61,7 @@ JLife = (function() {
                             if (n[i]) {
                                 var offset = i - 4;
                                 var cellVal =
-                                      offset < -1 ? grid.width * -1 - (offset + 3) + pos
+                                      offset < -1 ? grid.width * -1 + (offset + 3) + pos
                                     : offset >  1 ? grid.width      - (3 - offset) + pos
                                     :               offset + pos
                                 ;
