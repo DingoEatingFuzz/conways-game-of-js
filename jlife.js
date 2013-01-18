@@ -1,5 +1,5 @@
 JLife = (function() {
-
+    "use strict";
     function seedGrid(w, h, state) {
         if (state) return state.slice(0);
 
@@ -10,15 +10,17 @@ JLife = (function() {
         return grid;
     }
 
-
     return function(w, h, state) {
-
         var _cells = [];
 
         return {
             cells: seedGrid(w, h, state),
             width: w,
             height: h,
+            top:    function(pos) { return pos <  this.width; },
+            bottom: function(pos) { return pos >= this.width * (this.height - 1); },
+            left:   function(pos) { return pos %  this.width === 0; },
+            right:  function(pos) { return pos %  this.width === this.width - 1; },
             step: function(num) {
                 num = num || 1;
                 for (var i = 0; i < num; ++i) {
@@ -33,28 +35,21 @@ JLife = (function() {
                     this.cells = buffer;
                 }
             },
-            at: function(x, y) {
-                var grid      = this;
-                var pos       = y ? grid.width*y + x : x;
+            at: function(idx) {
+                var grid = this;
+                var pos  = idx;grid
 
                 if (_cells[pos]) return _cells[pos];
 
-                var _adjacent = [];
                 var cell = {
                     state:     grid.cells[pos],
-                    top:       function() { return pos <  grid.width; },
-                    bottom:    function() { return pos >= grid.width * (grid.height - 1); },
-                    left:      function() { return pos %  grid.width === 0; },
-                    right:     function() { return pos %  grid.width === grid.width - 1; },
                     neighbors: function() {
-                        if (_adjacent.length) return _adjacent;
-
                         var n = [ 1, 1, 1, 1, 0, 1, 1, 1, 1 ];
 
-                        if (this.top())    n[0] = n[1] = n[2] = 0;
-                        if (this.bottom()) n[6] = n[7] = n[8] = 0;
-                        if (this.left())   n[0] = n[3] = n[6] = 0;
-                        if (this.right())  n[2] = n[5] = n[8] = 0;
+                        if (grid.top(pos))    n[0] = n[1] = n[2] = 0;
+                        if (grid.bottom(pos)) n[6] = n[7] = n[8] = 0;
+                        if (grid.left(pos))   n[0] = n[3] = n[6] = 0;
+                        if (grid.right(pos))  n[2] = n[5] = n[8] = 0;
 
                         var adjacent = [];
                         for (var i = 0, len = n.length; i < len; ++i) {
@@ -77,11 +72,16 @@ JLife = (function() {
                             return total;
                         };
 
-                        _adjacent = adjacent;
+                        this.neighbors = function() { return adjacent; }
                         return adjacent;
                     }
                 }
                 _cells[pos] = cell;
+                if (_cells.length === this.width * this.height) {
+                    this.at = function(idx) {
+                        return _cells[idx];
+                    }
+                }
                 return cell;
             }
         };
