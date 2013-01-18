@@ -1,12 +1,10 @@
 ExampleBoard = {
-    oscillator: function() { return Jlife(5, 5, [
-        0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0,
-        0, 1, 1, 1, 0,
-        0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0
+    oscillator: function() { return JLife(3, 3, [
+        0, 0, 0,
+        1, 1, 1,
+        0, 0, 0,
     ]); },
-    pulsar: function() { return Jlife(17, 17, [
+    pulsar: function() { return JLife(17, 17, [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0,
