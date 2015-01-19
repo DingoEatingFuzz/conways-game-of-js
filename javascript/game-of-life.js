@@ -1,4 +1,4 @@
-JLife = (function() {
+GameOfLife = (function() {
     "use strict";
     function seedGrid(w, h, state) {
         if (state) return state.slice(0);

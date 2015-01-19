@@ -12,7 +12,7 @@
     </div>
     <script src='../support/polyfills.js'></script>
     <script src='../support/fps.js'></script>
-    <script src='jlife.js'></script>
+    <script src='game-of-life.js'></script>
     <script>
         var fps = new FPS(function(framerate) {
             document.getElementById('fps').textContent = framerate.toFixed(1);
@@ -98,7 +98,7 @@
             var ctx = gameCanvas.getContext('2d');
             ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
-            var board = JLife(Math.floor(gameCanvas.width / size), Math.floor(gameCanvas.height / size));
+            var board = GameOfLife(Math.floor(gameCanvas.width / size), Math.floor(gameCanvas.height / size));
             initGrid(gridCanvas, size);
 
             var step = function() {
