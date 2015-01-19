@@ -75,11 +75,11 @@
                 ctx.strokeStyle = '#CCC';
                 ctx.lineWidth   = 1;
                 ctx.beginPath();
-                for (var i = 0, len = canvas.width; i <= len; i += size) {
+                for (var i = -0.5, len = canvas.width; i <= len; i += size) {
                     ctx.moveTo(i, 0);
                     ctx.lineTo(i, canvas.height);
                 }
-                for (i = 0, len = canvas.height; i <= len; i += size) {
+                for (i = -0.5, len = canvas.height; i <= len; i += size) {
                     ctx.moveTo(0, i);
                     ctx.lineTo(canvas.width, i);
                 }
