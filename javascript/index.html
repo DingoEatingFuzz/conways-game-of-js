@@ -1,38 +1,42 @@
 <!doctype html>
 <html>
-<head>
+  <head>
     <meta charset='utf-8'/>
     <link href='../support/styles.css' rel='stylesheet'/>
-</head>
-<body>
+  </head>
+  <body>
     <div id='game-box'>
-        <canvas id='game'></canvas>
-        <canvas id='game-grid'></canvas>
-        <div id='fps'></div>
+      <canvas id='game'></canvas>
+      <canvas id='game-grid'></canvas>
     </div>
+    <div id='fps'></div>
+
     <script src='../support/polyfills.js'></script>
     <script src='../support/fps.js'></script>
     <script src='game-of-life.js'></script>
     <script src='player.js'></script>
+
     <script>
-        var fps = new FPS(function(framerate) {
-            document.getElementById('fps').textContent = framerate.toFixed(1);
-        });
+      var fps = new FPS(function(framerate) {
+        document.getElementById('fps').textContent = framerate.toFixed(1);
+      }, function() {
+        document.getElementById('fps').style.visibility = 'hidden';
+      });
 
-        var squareSize = parseInt(location.hash.substr(1)) || 4;
+      var squareSize = parseInt(location.hash.substr(1)) || 4;
 
-        var gameCanvas = document.getElementById('game');
-        var gridCanvas = document.getElementById('game-grid');
+      var gameCanvas = document.getElementById('game');
+      var gridCanvas = document.getElementById('game-grid');
 
-        gameCanvas.width  = gridCanvas.width  = document.body.clientWidth;
-        gameCanvas.height = gridCanvas.height = document.body.clientHeight;
+      gameCanvas.width  = gridCanvas.width  = document.body.clientWidth;
+      gameCanvas.height = gridCanvas.height = document.body.clientHeight;
 
-        var player = new Player(squareSize, gameCanvas, gridCanvas);
+      var player = new Player(squareSize, gameCanvas, gridCanvas);
 
-        window.onhashchange = function() {
-            squareSize = parseInt(location.hash.substr(1)) || 4;
-            player.reset(squareSize);
-        }
+      window.onhashchange = function() {
+        squareSize = parseInt(location.hash.substr(1)) || 4;
+        player.reset(squareSize);
+      }
     </script>
-</body>
+  </body>
 </html>
