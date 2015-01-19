@@ -57,6 +57,22 @@
             }
         }
 
+        function canvasPrintLines(canvas, ctx, size) {
+            ctx.strokeStyle = '#CCC';
+            ctx.lineWidth   = 1;
+            ctx.beginPath();
+            for (var i = -0.5, len = canvas.width; i <= len; i += size) {
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, canvas.height);
+            }
+            for (i = -0.5, len = canvas.height; i <= len; i += size) {
+                ctx.moveTo(0, i);
+                ctx.lineTo(canvas.width, i);
+            }
+            ctx.stroke();
+            ctx.closePath();
+        }
+
         function printBoard(board) {
             console.log(
                 board.cells.toString()
@@ -72,19 +88,7 @@
             ctx  = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             if (size > 3) {
-                ctx.strokeStyle = '#CCC';
-                ctx.lineWidth   = 1;
-                ctx.beginPath();
-                for (var i = -0.5, len = canvas.width; i <= len; i += size) {
-                    ctx.moveTo(i, 0);
-                    ctx.lineTo(i, canvas.height);
-                }
-                for (i = -0.5, len = canvas.height; i <= len; i += size) {
-                    ctx.moveTo(0, i);
-                    ctx.lineTo(canvas.width, i);
-                }
-                ctx.stroke();
-                ctx.closePath();
+                canvasPrintLines(canvas, ctx, size)
             }
         }
 
