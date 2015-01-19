@@ -1,10 +1,16 @@
 FPS = (function() {
-  var FPS = function(onupdate) {
+  var FPS = function(onupdate, onerror) {
     this.onupdate = onupdate || function() {};
-    this.isRunning = true;
-    this.prev = performance.now();
+    this.onerror = onerror || function()  {};
 
-    this.tick();
+    if (window.performance) {
+      this.isRunning = true;
+      this.prev = performance.now();
+      this.tick();
+    } else {
+      this.isRunning = false;
+      this.onerror();
+    }
   };
 
   FPS.prototype = {
