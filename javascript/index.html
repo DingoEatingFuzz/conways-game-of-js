@@ -2,12 +2,6 @@
 <html>
 <head>
     <meta charset='utf-8'/>
-    <script src='jlife.js'></script>
-    <div id='game-box'>
-        <canvas id='game'></canvas>
-        <canvas id='game-grid'></canvas>
-        <div id='fps'></div>
-    </div>
     <style>
         html, body { margin:0; padding:0; height:100%; font-family:monospace; }
         #game-box { position:relative; margin:auto; }
@@ -17,6 +11,13 @@
     </style>
 </head>
 <body>
+    <div id='game-box'>
+        <canvas id='game'></canvas>
+        <canvas id='game-grid'></canvas>
+        <div id='fps'></div>
+    </div>
+    <script src='../support/fps.js'></script>
+    <script src='jlife.js'></script>
     <script>
         var boardState = 0;
 
@@ -124,15 +125,9 @@
             clearInterval(loop);
         }
 
-        var prevTick = performance.now();
-        function fps() {
-            requestAnimationFrame(fps);
-            var tick = performance.now();
-            var timing = 1000 / (tick - prevTick);
-            prevTick = tick;
-            document.getElementById('fps').textContent = timing.toFixed(1);
-        }
-        fps();
+        var fps = new FPS(function(framerate) {
+            document.getElementById('fps').textContent = framerate.toFixed(1);
+        });
     </script>
 </body>
 </html>
