@@ -10,6 +10,7 @@
         <canvas id='game-grid'></canvas>
         <div id='fps'/>
     </div>
+    <script src='../support/polyfills.js'></script>
     <script src='../support/fps.js'></script>
     <script src='clife.js'></script>
     <script src='examples.js'></script>
@@ -22,19 +23,12 @@
 
         var boardState = 0;
 
-        (function() {
-          var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-                                      window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-          window.requestAnimationFrame = requestAnimationFrame;
-        })();
-
         var squareSize = parseInt(location.hash.substr(1)) || 4;
 
         var gameCanvas = document.getElementById('game');
         var gridCanvas = document.getElementById('game-grid');
             gameCanvas.width  = gridCanvas.width  = document.body.clientWidth;
             gameCanvas.height = gridCanvas.height = document.body.clientHeight;
-        var loop;
 
         initGame(gameCanvas, gridCanvas, squareSize, ++boardState);
 
@@ -112,24 +106,13 @@
                 else ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
             }
 
-            if (window.requestAnimationFrame) {
-                window.requestAnimationFrame(step);
-            } else {
-                loop = setInterval(function() {
-                    board.step();
-                    canvasBigPrintBoard(board, ctx, size);
-                }, 1000/25);
-            }
+            window.requestAnimationFrame(step);
         }
 
         var board2 = ExampleBoard.oscillator();
         function step() {
             board2.step();
             printBoard(board2);
-        }
-
-        function kill() {
-            clearInterval(loop);
         }
     </script>
 </body>
