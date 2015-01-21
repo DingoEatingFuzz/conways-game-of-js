@@ -2,20 +2,15 @@
 <html>
 <head>
     <meta charset='utf-8'/>
-    <script src='clife.js'></script>
-    <script src='examples.js'></script>
+    <link rel='stylesheet' href='../support/styles.css'/>
+</head>
+<body>
     <div id='game-box'>
         <canvas id='game'></canvas>
         <canvas id='game-grid'></canvas>
     </div>
-    <style>
-        html, body { margin:0; padding:0; height:100%; }
-        #game-box { position:relative; margin:auto; }
-        #game, #game-grid { position:absolute; top:0; left:0; }
-        #game, #game-grid, #game-box { width:100%; height:100%; }
-    </style>
-</head>
-<body>
+    <script src='clife.js'></script>
+    <script src='examples.js'></script>
     <script>
         var boardState = 0;
 
