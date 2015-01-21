@@ -91,8 +91,6 @@
         }
 
         function initGame(gameCanvas, gridCanvas, size, state) {
-            kill();
-
             var ctx = gameCanvas.getContext('2d');
             ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
@@ -107,12 +105,6 @@
             }
 
             window.requestAnimationFrame(step);
-        }
-
-        var board2 = ExampleBoard.oscillator();
-        function step() {
-            board2.step();
-            printBoard(board2);
         }
     </script>
 </body>
