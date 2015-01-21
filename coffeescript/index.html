@@ -8,10 +8,18 @@
     <div id='game-box'>
         <canvas id='game'></canvas>
         <canvas id='game-grid'></canvas>
+        <div id='fps'/>
     </div>
+    <script src='../support/fps.js'></script>
     <script src='clife.js'></script>
     <script src='examples.js'></script>
     <script>
+        var fps = new FPS(function(framerate) {
+            document.getElementById('fps').textContent = framerate.toFixed(1);
+        }, function() {
+            document.getElementById('fps').style.visibility = 'hidden';
+        });
+
         var boardState = 0;
 
         (function() {
