@@ -1,5 +1,4 @@
-jLife
-=====
+## Conway's Game of JavaScript
 
 Conway's Game of Life in JavaScript
 
