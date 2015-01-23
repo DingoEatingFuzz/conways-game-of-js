@@ -1,5 +1,5 @@
 "use strict"
-window.JLife = do ->
+window.GameOfLife = do ->
 
     seedGrid = (w, h, state) ->
         return if state? then state[..] else ( Math.round(Math.random()) for x in [1..(w * h)] )
