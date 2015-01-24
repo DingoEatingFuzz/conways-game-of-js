@@ -1,3 +1,4 @@
+"use strict"
 class Player
   constructor: (@size, @gameCanvas, @gridCanvas) ->
     @isRunning = true
@@ -33,7 +34,7 @@ class Player
   step: ->
     @board.step()
     printBoard(@board, @gameCtx, @size)
-    requestAnimationFrame(=> @step())
+    requestAnimationFrame(=> @step()) if @isRunning
 
   clear: ->
     @gameCtx.clearRect(0, 0, @gameCanvas.width, @gameCanvas.height)
@@ -44,24 +45,26 @@ printBoard = (board, ctx, size) ->
   ctx.fillRect(0, 0, board.width * size, board.height * size)
   ctx.fillStyle = '#09F'
   ctx.beginPath()
-  for i = 0, len = board.cells.length; i < len; ++i {
+  for i in [0..board.cells.length]
     x = i % board.width
     y = Math.floor(i / board.width)
-    if (board.cells[i]) ctx.fillRect(x * size, y * size, size, size)
-  }
+    ctx.fillRect(x * size, y * size, size, size) if board.cells[i]
 
 printLines = (canvas, size) ->
   ctx = canvas.getContext('2d')
   ctx.strokeStyle = '#CCC'
   ctx.lineWidth   = 1
   ctx.beginPath()
-  for i = -0.5, len = canvas.width; i <= len; i += size {
+
+  for i in (x * size - 0.5 for x in [0..canvas.width/size])
     ctx.moveTo(i, 0)
     ctx.lineTo(i, canvas.height)
-  }
-  for i = -0.5, len = canvas.height; i <= len; i += size {
+
+  for i in (x * size - 0.5 for x in [0..canvas.height/size])
     ctx.moveTo(0, i)
     ctx.lineTo(canvas.width, i)
-  }
+
   ctx.stroke()
   ctx.closePath()
+
+window.Player = Player
