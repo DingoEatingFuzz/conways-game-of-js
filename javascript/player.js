@@ -16,15 +16,10 @@ Player = (function() {
     minGridSize: 3,
     size: 10,
     setup: function() {
+      var w = Math.floor(this.gameCanvas.width / this.size), h = Math.floor(this.gameCanvas.height / this.size);
       this.rainbow = generateRainbow(1000, 2, 0.3);
-      this.board = GameOfLife(
-        Math.floor(this.gameCanvas.width / this.size),
-        Math.floor(this.gameCanvas.height / this.size)
-      );
-
-      this.noise = generatePerlinNoise(this.board.width, this.board.height, {
-        octaveCount: 6
-      });
+      this.noise = generatePerlinNoise(w, h, { octaveCount: 6 });
+      this.board = GameOfLife(w, h, this.noise.map(function(cell) { return cell > 0.4 && Math.random() > 0.6 }));
 
       if (this.size > this.minGridSize) {
         printLines(this.gridCanvas, this.size);
