@@ -16,11 +16,6 @@ html, body {
   left:0;
 }
 
-#game, #game-grid, #game-box {
-  width:100%;
-  height:100%;
-}
-
 #fps {
   position:absolute;
   top:10px;
