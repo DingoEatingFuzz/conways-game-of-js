@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset='utf-8'/>
+    <link href='../support/styles.css' rel='stylesheet'/>
+  </head>
+  <body>
+    <div id='game-box'>
+      <canvas id='game'></canvas>
+    </div>
+    <div id='fps'></div>
+
+    <script src='../support/perlin.js'></script>
+    <script src='../support/polyfills.js'></script>
+    <script src='../support/igloo-0.1.0.js'></script>
+    <script src='../support/fps.js'></script>
+    <script src='game-of-life.js'></script>
+    <script src='player.js'></script>
+
+    <script>
+      var fps = new FPS(function(framerate) {
+        document.getElementById('fps').textContent = framerate.toFixed(1);
+      }, function() {
+        document.getElementById('fps').style.visibility = 'hidden';
+      });
+
+      var squareSize = parseInt(location.hash.substr(1)) || 10;
+
+      var gameCanvas = document.getElementById('game');
+
+      gameCanvas.width  = document.body.clientWidth;
+      gameCanvas.height = document.body.clientHeight;
+
+      var player = new Player(squareSize, gameCanvas);
+
+      window.onhashchange = function() {
+        squareSize = parseInt(location.hash.substr(1)) || 10;
+        player.reset(squareSize);
+      }
+    </script>
+  </body>
+</html>
